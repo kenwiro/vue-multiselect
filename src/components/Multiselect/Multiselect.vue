@@ -1,9 +1,14 @@
 <template>
     <div :class="multiselectClasses">
-      <div class="multiselect__select"><i class="multiselect__select__icon" @click="unFocus"></i></div>
+      <div
+        class="multiselect__select"
+        @click="toggleFocus"
+      >
+        <i class="multiselect__select__icon"/>
+      </div>
       <div class="multiselect__tags">
         <label class="multiselect__tags__label">
-          <span class="multiselect__tags__label__text">{{ label }}</span>
+          <span :class="labelClasses">{{ label }}</span>
           <input
             class="multiselect__tags__input"
             type="text"
@@ -18,7 +23,10 @@
           >{{ this.selectedOption }}</span>
         </label>
       </div>
-      <div class="multiselect__content" v-if="filteredOptions.length">
+      <div
+        v-if="filteredOptions.length"
+        class="multiselect__content"
+      >
         <OptionsList
           v-for="(optionGroup, index) in filteredOptions"
           :key="index"
@@ -27,7 +35,10 @@
           @select="setOption"
         />
       </div>
-      <div class="multiselect__content" v-else>
+      <div
+        v-else
+        class="multiselect__content"
+      >
         <p>Ничего не найдено</p>
       </div>
     </div>
@@ -58,9 +69,13 @@ export default {
     unFocus() {
       this.isFocused = false;
     },
+    toggleFocus() {
+      this.isFocused = !this.isFocused;
+    },
     setOption(option) {
       this.selectedOption = option;
       this.value = '';
+      this.unFocus();
     }
   },
   computed: {
@@ -81,6 +96,15 @@ export default {
         'multiselect': true,
         'multiselect--active': this.isFocused
       };
+    },
+    labelClasses() {
+      return {
+        'multiselect__tags__label__text': true,
+        'multiselect__tags__label__text--empty':
+          this.selectedOption === null
+          && this.value === ''
+          && this.isFocused === false
+      };
     }
   }
 };
@@ -89,7 +113,7 @@ export default {
 <style lang="scss">
 
   $box_shadow: 4px 4px 17px 1px rgba(34, 60, 80, 0.2);
-  $unTarget_color: #d2d2d2;
+  $unTarget_color: #e7e7e7;
   $target_color: #98ff87;
 
   .multiselect {
@@ -103,6 +127,8 @@ export default {
       display: flex;
       align-items: center;
       position: absolute;
+      cursor: pointer;
+      z-index: 999;
       &__icon {
         left: 3px;
         top: 4px;
@@ -117,7 +143,6 @@ export default {
         -ms-transform: rotate(-45deg);
         transform: rotate(-45deg);
         cursor: pointer;
-        z-index: 999;
         user-select: none;
         .multiselect--active & {
           -webkit-transform: rotate(135deg);
@@ -138,10 +163,18 @@ export default {
         display: inline-block;
         &__text {
           position: absolute;
-          padding-top: 8px;
-          padding-left: 16px;
+          top: 8px;
+          left: 16px;
           font-size: 12px;
           color: #9e9e9e;
+          transition: .3s;
+          user-select: none;
+          &--empty {
+            top: 18px;
+            left: 16px;
+            font-size: 18px;
+            transition: .3s;
+          }
         }
       }
       &__input {
@@ -152,7 +185,9 @@ export default {
         font-size: 18px;
         border: 1px solid $unTarget_color;
         border-radius: 8px;
+        transition: .3s;
         .multiselect--active & {
+          transition: .3s;
           border: 1px solid $target_color;
           border-radius: 8px;
           box-shadow: 0px 0px 1px 4px rgba(152, 255, 135, 0.2);
@@ -211,12 +246,16 @@ export default {
           &--selected {
             background-color: $unTarget_color;
           }
+          &--focused {
+            background-color: #eeeeee;
+          }
           &:hover {
-            background-color: $unTarget_color;
+            background-color: #eeeeee;
           }
           &__text {
             display: inline-block;
             padding: 13px;
+            user-select: none;
           }
         }
       }
