@@ -1,0 +1,7 @@
+{
+  "nodeVersion":"system",
+  "integrationFolder":"tests/integration",
+  "componentFolder":"tests/components",
+  "baseUrl": "http://localhost:9000",
+  "testFiles": "**/*.test.*"
+}
