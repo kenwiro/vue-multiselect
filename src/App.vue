@@ -2,7 +2,7 @@
   <div class="app">
     <div class="container">
       <Multiselect
-        label="Выбрать сервис"
+        label="Choose the option"
         :options="data"
       />
     </div>
@@ -17,41 +17,40 @@ export default {
   components: { Multiselect },
   data() {
     return {
-      bar: 1,
       data: [
         {
           header: null,
           items: [
             {
-              value: 'Не привязывать ни к какому сервису'
+              value: 'Option 0.1'
             },
             {
-              value: 'Хостинг'
+              value: 'Option 0.2'
             }
           ]
         },
         {
-          header: 'Спектр',
+          header: 'Option 1',
           items: [
             {
-              value: 'Мой сайт на 1С-Битрикс!'
+              value: 'Option 1.1'
             },
             {
-              value: 'Мой сайт на Joomla!'
+              value: 'Option 1.2'
             },
             {
-              value: 'Другой мой сайт на Joomla!'
+              value: 'Option 1.3'
             }
           ]
         },
         {
-          header: 'VPS',
+          header: 'Option 2',
           items: [
             {
-              value: 'Мой сайт'
+              value: 'Option 2.1'
             },
             {
-              value: 'Прокси-сервер'
+              value: 'Option 2.2'
             }
           ]
         }
