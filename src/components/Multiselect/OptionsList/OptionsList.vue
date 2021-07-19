@@ -1,7 +1,7 @@
 <template>
   <ul class="multiselect__content__list">
     <li
-      v-if="optionGroup.header !== null"
+      v-if="optionGroup.header"
       class="multiselect__content__list__header"
     >
       <span class="multiselect__content__list__header__text">{{ optionGroup.header }}</span>

@@ -1,5 +1,9 @@
 <template>
-    <div :class="multiselectClasses">
+    <div
+      :class="multiselectClasses"
+      @keydown.esc="unFocus"
+      @click.stop
+    >
       <div
         class="multiselect__select"
         @click="toggleFocus"
@@ -13,52 +17,42 @@
             class="multiselect__tags__input"
             type="text"
             v-model="value"
-            :disabled="selectedOption !== null"
+            ref="input"
+            :disabled="selectedOption !== ''"
             @focus="setFocus"
           >
           <span
             class="multiselect__tags__selected__text"
             v-if="selectedOption"
-            @click="selectedOption = null"
+            @click="selectedOption = ''"
           >{{ this.selectedOption }}</span>
         </label>
       </div>
-      <div
-        v-if="filteredOptions.length"
-        class="multiselect__content"
-      >
-        <OptionsList
-          v-for="(optionGroup, index) in filteredOptions"
-          :key="index"
-          :option-group="optionGroup"
-          :selected-option="selectedOption"
-          @select="setOption"
-        />
-      </div>
-      <div
-        v-else
-        class="multiselect__content"
-      >
-        <p>Ничего не найдено</p>
-      </div>
+      <Content
+        v-if="isFocused"
+        :options="filteredOptions"
+        :selectedOption="selectedOption"
+        @select="setOption"
+        @unFocus="unFocus"
+      />
     </div>
 </template>
 
 <script>
 
-import OptionsList from './OptionsList/OptionsList';
+import Content from './Content/Content';
 export default {
   props: {
     label: String,
     options: Array
   },
   components: {
-    OptionsList
+    Content
   },
   data() {
     return {
       value: '',
-      selectedOption: null,
+      selectedOption: '',
       isFocused: false
     };
   },
@@ -68,6 +62,7 @@ export default {
     },
     unFocus() {
       this.isFocused = false;
+      this.$refs.input.blur();
     },
     toggleFocus() {
       this.isFocused = !this.isFocused;
@@ -75,7 +70,6 @@ export default {
     setOption(option) {
       this.selectedOption = option;
       this.value = '';
-      this.unFocus();
     }
   },
   computed: {
@@ -101,7 +95,7 @@ export default {
       return {
         'multiselect__tags__label__text': true,
         'multiselect__tags__label__text--empty':
-          this.selectedOption === null
+          this.selectedOption === ''
           && this.value === ''
           && this.isFocused === false
       };
@@ -221,7 +215,7 @@ export default {
       }
       &__list {
         padding: 0;
-        margin: 16px 0 0 0;
+        margin: 0;
         width: 100%;
         text-align: left;
         border-bottom: 1px solid $unTarget_color;
@@ -232,7 +226,7 @@ export default {
           margin-top: 0;
         }
         &__header {
-          padding: 0 0 0 16px;
+          padding: 16px 0 0 16px;
           font-weight: bold;
           &__text {
             display: inline-block;

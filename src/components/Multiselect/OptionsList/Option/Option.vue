@@ -26,7 +26,7 @@ export default {
     selectOption() {
       this.toggleFocus();
       if(this.isSelected) {
-        return this.$emit('select', null);
+        return this.$emit('select', '');
       }
       this.$emit('select', this.optionValue);
     },
