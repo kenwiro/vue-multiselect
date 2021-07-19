@@ -4,8 +4,7 @@
       @keydown.esc="unFocus"
       @click.stop
     >
-      <div
-        class="multiselect__select"
+      <div class="multiselect__select"
         @click="toggleFocus"
       >
         <i class="multiselect__select__icon"/>
@@ -16,8 +15,8 @@
           <input
             class="multiselect__tags__input"
             type="text"
-            v-model="value"
             ref="input"
+            v-model="value"
             :disabled="selectedOption !== ''"
             @focus="setFocus"
           >

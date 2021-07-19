@@ -21,7 +21,7 @@
 
 <script>
 
-import OptionsList from '../OptionsList/OptionsList';
+import OptionsList from './OptionsList/OptionsList';
 
 export default {
   props: {
